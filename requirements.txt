@@ -1,0 +1,7 @@
+langchain
+langgraph
+langchain-google-genai
+langchain_openai
+python-dotenv
+streamlit
+gradio
