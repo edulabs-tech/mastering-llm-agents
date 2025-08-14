@@ -7,7 +7,6 @@ from backend import invoke_llm, stream_llm, invoke_with_trim
 st.set_page_config(page_title="Bank Chatbot", layout="centered")
 
 st.title("🏦 Bank Chatbot")
-st.caption("A Streamlit app similar to your Gradio interface")
 
 # --- Sidebar for Inputs ---
 with st.sidebar:
@@ -38,13 +37,18 @@ if prompt := st.chat_input("What is your question?"):
     # Get assistant response and display it
     with st.chat_message("assistant"):
         # The backend function is called here with the full history
-        response_stream = stream_llm(prompt, st.session_state.messages, language=language, model_type=model)
+        response_stream = invoke_llm(prompt, st.session_state.messages, language=language, model_type=model)
         # st.write_stream displays the streamed response
-        response = st.write_stream(response_stream)
+        response = st.markdown(response_stream)
+
+        # # The backend function is called here with the full history
+        # response_stream = stream_llm(prompt, st.session_state.messages, language=language, model_type=model)
+        # # st.write_stream displays the streamed response
+        # response = st.write_stream(response_stream)
 
     # Add user message to chat history and display it
     st.session_state.messages.append({"role": "user", "content": prompt})
 
     # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    st.session_state.messages.append({"role": "assistant", "content": response_stream})
 
