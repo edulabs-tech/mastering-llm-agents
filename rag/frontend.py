@@ -1,16 +1,49 @@
-import gradio as gr
-
-from bank_chatbot.rag.backend import stream_rag_chain
-
-if __name__ == "__main__":
-    with gr.Blocks(fill_height=True) as demo:
-        gr.ChatInterface(
-            stream_rag_chain,
-            type="messages",
-            multimodal=False,
-            theme="soft"
-        )
-    demo.launch(share=False)
+import streamlit as st
+from backend import stream_rag_chain
 
 
-# how much mortgage i can get for 3000000 ils apartment?
+# --- Streamlit App ---
+
+st.set_page_config(page_title="Bank Chatbot with RAG", layout="centered")
+
+st.title("🏦 Bank Chatbot")
+
+# --- Sidebar for Inputs ---
+with st.sidebar:
+    st.header("Configuration")
+    model = st.selectbox("Select model:", ["Gemini", "Open AI"])
+    language = st.selectbox("Select language:", ["English", "Hebrew"])
+
+    if st.button("Clear Chat History"):
+        st.session_state.messages = []
+        st.rerun()
+
+# --- Chat Interface ---
+
+# Initialize chat history in session state if it doesn't exist
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display past messages from the chat history
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Get user input from the chat input box
+if prompt := st.chat_input("What is your question?"):
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Get assistant response and display it
+    with st.chat_message("assistant"):
+
+        # stream
+        response = st.write_stream(stream_rag_chain(prompt))
+
+
+    # Add user message to chat history and display it
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
+

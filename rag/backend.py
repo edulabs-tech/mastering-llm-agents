@@ -53,8 +53,6 @@ rag_chain = (
 )
 
 
-def stream_rag_chain(text, history):
-    full_msg = ""
+def stream_rag_chain(text):
     for chunk in rag_chain.stream(text):
-        full_msg = full_msg + chunk
-        yield full_msg
+        yield chunk

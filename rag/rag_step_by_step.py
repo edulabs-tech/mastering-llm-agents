@@ -24,11 +24,11 @@ load_dotenv()
 
 loader = PyPDFLoader("../docs/59321_booklet_guide_mashknta_A4_Pages_03.pdf",)
 docs = loader.load()
-#
-# print(f"Total docs: {len(docs)}")
-# print(f"Example doc metadata: {docs[0].metadata}")
-# print(f"Example snippet of doc content: {docs[5].page_content[:200]}")
-# print(f'Total characters in all docs: {sum([len(doc.page_content) for doc in docs])}')
+
+print(f"Total docs: {len(docs)}")
+print(f"Example doc metadata: {docs[0].metadata}")
+print(f"Example snippet of doc content: {docs[5].page_content[:200]}")
+print(f'Total characters in all docs: {sum([len(doc.page_content) for doc in docs])}')
 
 
 # INDEXING: SPLIT
@@ -39,9 +39,9 @@ text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200, add_start_index=True
 )
 all_splits = text_splitter.split_documents(docs)
-# print(f"Splits number: {len(all_splits)}")
-# print(f"Example split content: {all_splits[27].page_content}")
-# print(f"Example split metadata: {all_splits[27].metadata}")
+print(f"Splits number: {len(all_splits)}")
+print(f"Example split content: {all_splits[27].page_content}")
+print(f"Example split metadata: {all_splits[27].metadata}")
 
 # Embedding model
 # embedding_model = OpenAIEmbeddings()
@@ -61,9 +61,8 @@ vectorstore = Chroma.from_documents(
 # Closer to 1 = less similar
 #
 example_text = "How can I contact the bank?"
-# # example_text = "Where do I buy flowers?"
-# results = vectorstore.similarity_search_with_score(example_text, k=4)
-# pprint(results)
+results = vectorstore.similarity_search_with_score(example_text, k=4)
+pprint(results)
 
 
 # RETRIEVAL AND GENERATION: RETRIEVAL
@@ -79,7 +78,7 @@ retriever = vectorstore.as_retriever(
     search_type="similarity", search_kwargs={"k": 6})
 retrieved_docs = retriever.invoke(example_text)
 
-# pprint(retrieved_docs)
+pprint(retrieved_docs)
 
 # RETRIEVAL AND GENERATION: GENERATE
 # Let’s put it all together into a chain that takes a question,
@@ -92,7 +91,7 @@ open_ai_model = ChatOpenAI(model="gpt-4o-mini")
 
 
 prompt = hub.pull("rlm/rag-prompt")
-# #
+
 def format_docs(original_docs):
     return "\n\n".join(doc.page_content for doc in original_docs)
 
@@ -102,6 +101,6 @@ rag_chain = (
     | open_ai_model
     | StrOutputParser()
 )
-# #
+
 for chunk in rag_chain.stream(example_text):
     print(chunk, end="", flush=True)

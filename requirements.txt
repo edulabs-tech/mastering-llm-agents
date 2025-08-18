@@ -5,3 +5,8 @@ langchain_openai
 python-dotenv
 streamlit
 gradio
+langchain_community
+langchain_chroma
+langchain_core
+langchain_text_splitters
+pypdf
