@@ -44,8 +44,8 @@ print(f"Example split content: {all_splits[27].page_content}")
 print(f"Example split metadata: {all_splits[27].metadata}")
 
 # Embedding model
-# embedding_model = OpenAIEmbeddings()
-embedding_model=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+embedding_model = OpenAIEmbeddings()
+# embedding_model=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
 
 # INDEXING: STORE
@@ -75,7 +75,7 @@ pprint(results)
 # limit the number of documents k returned by the retriever to 6
 
 retriever = vectorstore.as_retriever(
-    search_type="similarity", search_kwargs={"k": 6})
+    search_type="similarity", search_kwargs={"k": 4})
 retrieved_docs = retriever.invoke(example_text)
 
 pprint(retrieved_docs)
@@ -95,6 +95,8 @@ prompt = hub.pull("rlm/rag-prompt")
 def format_docs(original_docs):
     return "\n\n".join(doc.page_content for doc in original_docs)
 
+# retriever.invoke(question) => list<Document> => format_docs(list<Document>)
+
 rag_chain = (
     {"context": retriever | format_docs, "question": RunnablePassthrough()}
     | prompt
@@ -104,3 +106,5 @@ rag_chain = (
 
 for chunk in rag_chain.stream(example_text):
     print(chunk, end="", flush=True)
+
+

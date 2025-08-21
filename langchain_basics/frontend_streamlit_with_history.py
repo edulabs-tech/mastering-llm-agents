@@ -39,10 +39,11 @@ if prompt := st.chat_input("What is your question?"):
 
         # invoke
         # response = invoke_llm(prompt, st.session_state.messages, language=language, model_type=model)
-        # st.markdown(response)
+        response = invoke_with_trim(prompt, st.session_state.messages, language=language, model_type=model)
+        st.markdown(response)
 
         # stream
-        response = st.write_stream(stream_llm(prompt, st.session_state.messages, language=language, model_type=model))
+        # response = st.write_stream(stream_llm(prompt, st.session_state.messages, language=language, model_type=model))
 
 
     # Add user message to chat history and display it

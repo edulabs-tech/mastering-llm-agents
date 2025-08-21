@@ -7,8 +7,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 load_dotenv()
 
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
-# llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+# llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 json_schema = {
     "title": "person",
@@ -96,6 +96,6 @@ Trump began his second presidency by initiating mass layoffs of federal workers.
 
 Since 2015, Trump's leadership style and political agenda—often referred to as Trumpism—have reshaped the Republican Party's identity. Many of his comments and actions have been characterized as racist or misogynistic, and he has made false or misleading statements and promoted conspiracy theories to an extent unprecedented in American politics. Trump's actions, especially in his second term, have been described as authoritarian and contributing to democratic backsliding. After his first term, scholars and historians ranked him as one of the worst presidents in American history.
 """
-result = llm.with_structured_output(json_schema).invoke(text)
+result = llm.with_structured_output(json_schema).invoke(text1)
 pprint.pprint(result)
 
