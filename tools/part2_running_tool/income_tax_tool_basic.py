@@ -12,7 +12,7 @@ load_dotenv()
 # https://python.langchain.com/docs/concepts/tool_calling/
 
 @tool
-def calculate_income_tax(annual_income):
+def calculate_income_tax(annual_income: int, currency="ILS"):
     """Calculate annual income tax based on annual income"""
     tax = 0
     brackets = [
@@ -56,43 +56,44 @@ prompt_template = ChatPromptTemplate.from_messages([
 
 chain = prompt_template | llm_with_tools
 
-def invoke_llm(prompt, history):
-    response: AIMessage = chain.invoke({"history": history, "text": prompt})
-    print(response)
-
-    if len(response.tool_calls) > 0:
-        single_tool_call = response.tool_calls[0]
-        # now run function
-        tool_name = single_tool_call['name']
-        tool_args = single_tool_call['args']
-        print(f"Requested to run tool {tool_name} with args {tool_args}")
-        if tool_name == "calculate_income_tax":
-            tax = calculate_income_tax.invoke(tool_args)
-            print(f"Calculated income tax: {tax}")
-            return tax
-    else:
-        return response.content
-
 # def invoke_llm(prompt, history):
-#     print(history)
 #     response: AIMessage = chain.invoke({"history": history, "text": prompt})
 #     print(response)
 #
 #     if len(response.tool_calls) > 0:
 #         single_tool_call = response.tool_calls[0]
 #         # now run function
-#         tool_call_id = single_tool_call["id"]
 #         tool_name = single_tool_call['name']
 #         tool_args = single_tool_call['args']
 #         print(f"Requested to run tool {tool_name} with args {tool_args}")
 #         if tool_name == "calculate_income_tax":
 #             tax = calculate_income_tax.invoke(tool_args)
 #             print(f"Calculated income tax: {tax}")
-#             # lets call LLM with this response so it could generate better reply
-#             tool_message: ToolMessage = ToolMessage(content=str(tax), tool_call_id=tool_call_id)
-#             response = llm_with_tools.invoke([(m["role", m["content"]]) for m in history] + [response] + [("human", prompt)] + [tool_message])
-#             return response.content
+#             return tax
 #     else:
 #         return response.content
+
+def invoke_llm(prompt, history):
+    print(history)
+    response: AIMessage = chain.invoke({"history": history, "text": prompt})
+    print(response)
+
+    if len(response.tool_calls) > 0:
+        single_tool_call = response.tool_calls[0]
+        # now run function
+        tool_call_id = single_tool_call["id"]
+        tool_name = single_tool_call['name']
+        tool_args = single_tool_call['args']
+        print(f"Requested to run tool {tool_name} with args {tool_args}")
+        if tool_name == "calculate_income_tax":
+            tax = calculate_income_tax.invoke(tool_args)
+            print(f"Calculated income tax: {tax}")
+            # lets call LLM with this response so it could generate better reply
+            tool_message: ToolMessage = ToolMessage(content=str(tax), tool_call_id=tool_call_id)
+            response = llm_with_tools.invoke(
+                [(m["role", m["content"]]) for m in history] + [("human", prompt)] + [response]  + [tool_message])
+            return response.content
+    else:
+        return response.content
 
 # calculate income tax if my annual income is 1234567

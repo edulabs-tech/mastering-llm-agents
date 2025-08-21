@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 
 from typing import Annotated
 
+from langchain_core.messages import AIMessage
 from langgraph.checkpoint.memory import MemorySaver
 from typing_extensions import TypedDict
 
@@ -18,6 +19,8 @@ class State(TypedDict):
     # in the annotation defines how this state key should be updated
     # (in this case, it appends messages to the list, rather than overwriting them)
     messages: Annotated[list, add_messages]
+    # is_authenticated = False
+    # token
 
 
 graph_builder = StateGraph(State)
@@ -25,7 +28,11 @@ llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 
 def chatbot(state: State):
-    return {"messages": [llm.invoke(state["messages"])]}
+    response: AIMessage = llm.invoke(state["messages"])
+    # this will APPEND new n=message from AI to previous messages
+    return {"messages": [response],
+            # "is_authenticated": True
+            }
 
 
 # The first argument is the unique node name
@@ -36,15 +43,10 @@ graph_builder.add_edge(START, "chatbot")
 graph_builder.add_edge("chatbot", END)
 
 memory = MemorySaver()
+# memory = PostgresSaver()
 graph = graph_builder.compile(
     checkpointer=memory
 )
-
-# without memory
-# def invoke_llm(user_input: str, history):
-#     print(history)
-#     response: State = graph.invoke({"messages": [(m["role"], m["content"]) for m in history] + [("user", user_input)]})
-#     return response["messages"][-1].content
 
 
 def invoke_llm(user_input: str, thread_id: str):

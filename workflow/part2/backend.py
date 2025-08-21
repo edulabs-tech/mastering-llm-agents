@@ -79,9 +79,9 @@ class BasicToolNode:
     def __init__(self, tools: list) -> None:
         self.tools_by_name = {tool.name: tool for tool in tools}
 
-    def __call__(self, inputs: dict):
+    def __call__(self, state: dict):
         print(f"*** Calling Tool Node... ***")
-        if messages := inputs.get("messages", []):
+        if messages := state.get("messages", []):
             message = messages[-1]
         else:
             raise ValueError("No message found in input")

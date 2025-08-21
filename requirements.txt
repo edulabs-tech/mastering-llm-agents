@@ -10,3 +10,4 @@ langchain_chroma
 langchain_core
 langchain_text_splitters
 pypdf
+langchain_experimental
