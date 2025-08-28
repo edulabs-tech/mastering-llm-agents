@@ -103,7 +103,6 @@ from langchain.chains.query_constructor.schema import AttributeInfo
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_openai import OpenAI
 
-# 'genre' and 'awards' have been removed from the schema.
 metadata_field_info = [
     AttributeInfo( name="year", description="The year the movie was released", type="integer"),
     AttributeInfo( name="director", description="The name of the movie director", type="string"),
@@ -135,23 +134,23 @@ for doc in response:
     print(f"Content: {doc.page_content[:100]}...")
     print("-" * 20)
 
-print("\n\n--- QUERY 2: Combining numerical and director filters (Unaffected) ---")
-# This query is unaffected as it doesn't use the removed fields.
-response = retriever.invoke("Find me a movie by Andrei Tarkovsky that is longer than 160 minutes.")
-print(f"Found {len(response)} document(s).\n")
-for doc in response:
-    print(f"Movie: {doc.metadata['director']}'s film from {doc.metadata['year']}")
-    print(f"Runtime: {doc.metadata['runtime_minutes']} minutes")
-    print("-" * 20)
-
-
-print("\n\n--- QUERY 3: Using boolean logic with semantic search for genre ---")
-# This query now relies on the words 'animated' and 'spirits' being in the
-# document content, while still filtering for `is_sequel: False`.
-response = retriever.invoke("I'm looking for a non-sequel animated film about spirits or magic.")
-print(f"Found {len(response)} document(s).\n")
-for doc in response:
-    print(f"Movie from {doc.metadata['year']} ({doc.metadata['country']})")
-    print(f"Director: {doc.metadata['director']}")
-    print(f"Content: {doc.page_content[:100]}...")
-    print("-" * 20)
+# print("\n\n--- QUERY 2: Combining numerical and director filters (Unaffected) ---")
+# # This query is unaffected as it doesn't use the removed fields.
+# response = retriever.invoke("Find me a movie by Andrei Tarkovsky that is longer than 160 minutes.")
+# print(f"Found {len(response)} document(s).\n")
+# for doc in response:
+#     print(f"Movie: {doc.metadata['director']}'s film from {doc.metadata['year']}")
+#     print(f"Runtime: {doc.metadata['runtime_minutes']} minutes")
+#     print("-" * 20)
+#
+#
+# print("\n\n--- QUERY 3: Using boolean logic with semantic search for genre ---")
+# # This query now relies on the words 'animated' and 'spirits' being in the
+# # document content, while still filtering for `is_sequel: False`.
+# response = retriever.invoke("I'm looking for a non-sequel animated film about spirits or magic.")
+# print(f"Found {len(response)} document(s).\n")
+# for doc in response:
+#     print(f"Movie from {doc.metadata['year']} ({doc.metadata['country']})")
+#     print(f"Director: {doc.metadata['director']}")
+#     print(f"Content: {doc.page_content[:100]}...")
+#     print("-" * 20)

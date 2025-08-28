@@ -87,5 +87,5 @@ retriever = SelfQueryRetriever.from_llm(
 
 # This example specifies a query and composite filter
 # response = retriever.invoke("What's a movie after 1990 but before 2005 that's all about toys, and preferably is animated")
-response = retriever.invoke("What's a movie after 1990 but before 2005 that's all about toys, and preferably is not with real actors playing")
-print(response)
+# response = retriever.invoke("What's a movie after 1990 but before 2005 that's all about toys, and preferably is not with real actors playing")
+# print(response)
