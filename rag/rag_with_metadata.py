@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
+from langchain_core.tools import create_retriever_tool
 
 # --- Setup ---
 load_dotenv()
@@ -124,15 +125,15 @@ retriever = SelfQueryRetriever.from_llm(
 
 # --- Adjusted Query Examples ---
 
-print("\n\n--- QUERY 1: Combining semantic search with a country filter ---")
-# This query now relies purely on semantic search for "class struggle"
-# while filtering on the country metadata.
-response = retriever.invoke("Tell me about a non-American movie dealing with class discrimination.")
-print(f"Found {len(response)} document(s).\n")
-for doc in response:
-    print(f"Movie: {doc.metadata['director']}'s film from {doc.metadata['year']} ({doc.metadata['country']})")
-    print(f"Content: {doc.page_content[:100]}...")
-    print("-" * 20)
+# print("\n\n--- QUERY 1: Combining semantic search with a country filter ---")
+# # This query now relies purely on semantic search for "class struggle"
+# # while filtering on the country metadata.
+# response = retriever.invoke("Tell me about a non-American movie dealing with class discrimination.")
+# print(f"Found {len(response)} document(s).\n")
+# for doc in response:
+#     print(f"Movie: {doc.metadata['director']}'s film from {doc.metadata['year']} ({doc.metadata['country']})")
+#     print(f"Content: {doc.page_content[:100]}...")
+#     print("-" * 20)
 
 # print("\n\n--- QUERY 2: Combining numerical and director filters (Unaffected) ---")
 # # This query is unaffected as it doesn't use the removed fields.
