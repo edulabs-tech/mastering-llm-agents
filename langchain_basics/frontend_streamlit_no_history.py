@@ -5,7 +5,6 @@ from backend import invoke_llm, stream_llm, invoke_with_trim
 st.set_page_config(page_title="Bank Chatbot", layout="centered")
 
 st.title("🏦 Bank Chatbot")
-st.caption("A Streamlit app similar to your Gradio interface (stateless)")
 
 # --- Sidebar for Inputs ---
 with st.sidebar:

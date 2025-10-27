@@ -15,8 +15,12 @@ docs = [
     Document(
         page_content="In a theme park on a remote island, a wealthy entrepreneur secretly creates a zoo of living dinosaurs cloned from prehistoric DNA. Before the park can open to the public, a security breakdown allows the deadly creatures to escape and hunt the human visitors.",
         metadata={
-            "year": 1993, "rating": 7.7, "director": "Steven Spielberg",
-            "runtime_minutes": 127, "country": "USA", "is_sequel": False,
+            "year": 1993,
+            "rating": 7.7,
+            "director": "Steven Spielberg",
+            "runtime_minutes": 127,
+            "country": "USA",
+            "is_sequel": False,
         },
     ),
     Document(
@@ -135,23 +139,33 @@ retriever = SelfQueryRetriever.from_llm(
 #     print(f"Content: {doc.page_content[:100]}...")
 #     print("-" * 20)
 
-# print("\n\n--- QUERY 2: Combining numerical and director filters (Unaffected) ---")
-# # This query is unaffected as it doesn't use the removed fields.
-# response = retriever.invoke("Find me a movie by Andrei Tarkovsky that is longer than 160 minutes.")
-# print(f"Found {len(response)} document(s).\n")
-# for doc in response:
-#     print(f"Movie: {doc.metadata['director']}'s film from {doc.metadata['year']}")
-#     print(f"Runtime: {doc.metadata['runtime_minutes']} minutes")
-#     print("-" * 20)
-#
-#
-# print("\n\n--- QUERY 3: Using boolean logic with semantic search for genre ---")
-# # This query now relies on the words 'animated' and 'spirits' being in the
-# # document content, while still filtering for `is_sequel: False`.
-# response = retriever.invoke("I'm looking for a non-sequel animated film about spirits or magic.")
-# print(f"Found {len(response)} document(s).\n")
-# for doc in response:
-#     print(f"Movie from {doc.metadata['year']} ({doc.metadata['country']})")
-#     print(f"Director: {doc.metadata['director']}")
-#     print(f"Content: {doc.page_content[:100]}...")
-#     print("-" * 20)
+print("\n\n--- QUERY 2: Combining numerical and director filters (Unaffected) ---")
+# This query is unaffected as it doesn't use the removed fields.
+response = retriever.invoke("Find me a movie by Andrei Tarkovsky that is longer than 160 minutes.")
+print(f"Found {len(response)} document(s).\n")
+for doc in response:
+    print(f"Movie: {doc.metadata['director']}'s film from {doc.metadata['year']}")
+    print(f"Runtime: {doc.metadata['runtime_minutes']} minutes")
+    print("-" * 20)
+
+
+print("\n\n--- QUERY 3: Using boolean logic with semantic search for genre ---")
+# This query now relies on the words 'animated' and 'spirits' being in the
+# document content, while still filtering for `is_sequel: False`.
+response = retriever.invoke("I'm looking for a non-sequel animated film about spirits or magic.")
+print(f"Found {len(response)} document(s).\n")
+for doc in response:
+    print(f"Movie from {doc.metadata['year']} ({doc.metadata['country']})")
+    print(f"Director: {doc.metadata['director']}")
+    print(f"Content: {doc.page_content[:100]}...")
+    print("-" * 20)
+
+
+tool = create_retriever_tool(retriever, name="Retriever", description="Retrieves info about movies")
+
+print(tool.invoke("I'm looking for a non-sequel animated film about spirits or magic."))
+
+# agent = create_react_agent(
+#     llm,
+#     [tool]
+# )
