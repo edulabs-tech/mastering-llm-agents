@@ -70,7 +70,7 @@ json_schema = {
     },
     "required": ["last_name", "first_name"],
 }
-structured_llm = llm.with_structured_output(json_schema)
+# structured_llm = llm.with_structured_output(json_schema)
 
 text = """
 Elon Reeve Musk (born June 28, 1971) is a businessman known 
@@ -96,6 +96,8 @@ Trump began his second presidency by initiating mass layoffs of federal workers.
 
 Since 2015, Trump's leadership style and political agenda—often referred to as Trumpism—have reshaped the Republican Party's identity. Many of his comments and actions have been characterized as racist or misogynistic, and he has made false or misleading statements and promoted conspiracy theories to an extent unprecedented in American politics. Trump's actions, especially in his second term, have been described as authoritarian and contributing to democratic backsliding. After his first term, scholars and historians ranked him as one of the worst presidents in American history.
 """
-result = llm.with_structured_output(json_schema).invoke(text1)
+result = llm.with_structured_output(json_schema).invoke(text)
 pprint.pprint(result)
 
+# pip install streamlit
+# import streamlit as st
