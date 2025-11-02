@@ -2,7 +2,7 @@ import streamlit as st
 from backend import invoke_llm
 # --- Streamlit App ---
 
-st.set_page_config(page_title="Bank Chatbot", layout="centered")
+st.set_page_config(page_title="Tax Agent", layout="centered")
 
 # --- Sidebar for Configuration ---
 # --- Sidebar for Configuration ---

@@ -12,7 +12,11 @@ load_dotenv()
 
 @tool
 def calculate_income_tax(annual_income):
-    """Calculate annual income tax based on annual income"""
+    """
+    Calculate Israeli annual income tax based on annual income in ILS
+    params:
+        annual_income: annual income in ILS
+    """
     tax = 0
     brackets = [
         (84120, 0.10),

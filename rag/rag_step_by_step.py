@@ -2,15 +2,16 @@ from pprint import pprint
 import numpy as np
 from dotenv import load_dotenv
 
-from langchain_openai import ChatOpenAI
+# from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings
+# from langchain_openai import OpenAIEmbeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
+from langsmith import Client
 
 
 # Load environment variables from .env file
@@ -44,8 +45,8 @@ print(f"Example split content: {all_splits[27].page_content}")
 print(f"Example split metadata: {all_splits[27].metadata}")
 
 # Embedding model
-embedding_model = OpenAIEmbeddings()
-# embedding_model=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+# embedding_model = OpenAIEmbeddings()
+embedding_model=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
 
 # INDEXING: STORE
@@ -84,13 +85,13 @@ pprint(retrieved_docs)
 # Let’s put it all together into a chain that takes a question,
 # retrieves relevant documents, constructs a prompt,
 # passes it into a model, and parses the output.
-open_ai_model = ChatOpenAI(model="gpt-4o-mini")
+# llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 
 # Using prompt from the prompt hub:
 # https://smith.langchain.com/hub/rlm/rag-prompt
-
-
-prompt = hub.pull("rlm/rag-prompt")
+client = Client()
+prompt = client.pull_prompt("rlm/rag-prompt", include_model=True)
 
 def format_docs(original_docs):
     return "\n\n".join(doc.page_content for doc in original_docs)
@@ -100,7 +101,7 @@ def format_docs(original_docs):
 rag_chain = (
     {"context": retriever | format_docs, "question": RunnablePassthrough()}
     | prompt
-    | open_ai_model
+    | llm
     | StrOutputParser()
 )
 

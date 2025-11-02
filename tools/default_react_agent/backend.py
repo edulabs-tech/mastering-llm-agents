@@ -1,14 +1,13 @@
 from dotenv import load_dotenv
 from langchain_core.tools import tool
-from langchain_experimental.tools import PythonAstREPLTool
-from langchain_openai import ChatOpenAI
+# from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 
 load_dotenv()
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-
-python_tool = PythonAstREPLTool()
+# llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 
 @tool
 def calculate_income_tax(annual_income):
@@ -42,12 +41,11 @@ def calculate_income_tax(annual_income):
 
 
 tools = [
-    python_tool,
     calculate_income_tax
 ]
 
 memory = MemorySaver()
-agent_executor = create_react_agent(
+agent_executor = create_agent(
     llm,
     tools,
     checkpointer=memory

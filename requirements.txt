@@ -24,3 +24,4 @@ langchain-experimental
 mcp
 typing_extensions
 openai
+beautifulsoup4
