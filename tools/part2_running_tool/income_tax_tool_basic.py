@@ -62,9 +62,9 @@ chain = prompt_template | llm_with_tools
 
 
 def invoke_llm(prompt, history):
-    print(history)
+    # print(history)
     response: AIMessage = chain.invoke({"history": history, "text": prompt})
-    print(response)
+    # print(response)
 
     if len(response.tool_calls) > 0:
         single_tool_call = response.tool_calls[0]

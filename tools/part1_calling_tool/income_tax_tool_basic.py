@@ -11,7 +11,7 @@ load_dotenv()
 # https://python.langchain.com/docs/concepts/tool_calling/
 
 @tool
-def calculate_income_tax(annual_income):
+def calculate_income_tax(annual_income: int) -> int:
     """
     Calculate Israeli annual income tax based on annual income in ILS
     params:
@@ -57,12 +57,12 @@ prompt_template = ChatPromptTemplate.from_messages([
     ("human", "{text}")
 ])
 
-chain = prompt_template | llm_with_tools | StrOutputParser()
+chain = prompt_template | llm_with_tools
 
 def invoke_llm(prompt, history):
     response =  chain.invoke({"history": history, "text": prompt})
-    pprint.pprint(response)
-    return response
+    print(response)
+    return response.content
 
 if __name__ == '__main__':
     while True:

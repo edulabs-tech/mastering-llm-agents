@@ -16,7 +16,7 @@ from langchain_core.runnables import RunnablePassthrough
 load_dotenv()
 
 # INDEXING: LOAD
-loader = PyPDFLoader("../docs/59321_booklet_guide_mashknta_A4_Pages_03.pdf",)
+loader = PyPDFLoader("docs/59321_booklet_guide_mashknta_A4_Pages_03.pdf",)
 docs = loader.load()
 
 # INDEXING: SPLIT

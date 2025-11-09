@@ -23,13 +23,13 @@ load_dotenv()
 # There are 160+ integrations to choose from
 # https://python.langchain.com/docs/integrations/document_loaders/
 
-loader = PyPDFLoader("../docs/59321_booklet_guide_mashknta_A4_Pages_03.pdf",)
+loader = PyPDFLoader("docs/59321_booklet_guide_mashknta_A4_Pages_03.pdf")
 docs = loader.load()
 
-print(f"Total docs: {len(docs)}")
-print(f"Example doc metadata: {docs[0].metadata}")
-print(f"Example snippet of doc content: {docs[5].page_content[:200]}")
-print(f'Total characters in all docs: {sum([len(doc.page_content) for doc in docs])}')
+# print(f"Total docs: {len(docs)}")
+# print(f"Example doc metadata: {docs[0].metadata}")
+# print(f"Example snippet of doc content: {docs[5].page_content[:200]}")
+# print(f'Total characters in all docs: {sum([len(doc.page_content) for doc in docs])}')
 
 
 # INDEXING: SPLIT
@@ -40,16 +40,16 @@ text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200, add_start_index=True
 )
 all_splits = text_splitter.split_documents(docs)
-print(f"Splits number: {len(all_splits)}")
-print(f"Example split content: {all_splits[27].page_content}")
-print(f"Example split metadata: {all_splits[27].metadata}")
+# print(f"Splits number: {len(all_splits)}")
+# print(f"Example split content: {all_splits[27].page_content}")
+# print(f"Example split metadata: {all_splits[27].metadata}")
 
 # Embedding model
 # embedding_model = OpenAIEmbeddings()
 embedding_model=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
 
-# INDEXING: STORE
+# # # INDEXING: STORE
 vectorstore = Chroma.from_documents(
     documents=all_splits,
     embedding=embedding_model
@@ -63,7 +63,7 @@ vectorstore = Chroma.from_documents(
 #
 example_text = "How can I contact the bank?"
 results = vectorstore.similarity_search_with_score(example_text, k=4)
-pprint(results)
+# pprint(results)
 
 
 # RETRIEVAL AND GENERATION: RETRIEVAL
@@ -77,9 +77,9 @@ pprint(results)
 
 retriever = vectorstore.as_retriever(
     search_type="similarity", search_kwargs={"k": 4})
-retrieved_docs = retriever.invoke(example_text)
+# retrieved_docs = retriever.invoke(example_text)
 
-pprint(retrieved_docs)
+# pprint(retrieved_docs)
 
 # RETRIEVAL AND GENERATION: GENERATE
 # Let’s put it all together into a chain that takes a question,
@@ -104,6 +104,8 @@ rag_chain = (
     | llm
     | StrOutputParser()
 )
+
+# rag_chain.invoke("how ....")
 
 for chunk in rag_chain.stream(example_text):
     print(chunk, end="", flush=True)

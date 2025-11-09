@@ -24,22 +24,23 @@ template = ChatPromptTemplate(
     ]
 )
 
-prompt_value = template.invoke(
-    {
-        "assistant_name": "David",
-        "language": "Hebrew",
-        "user_input": "Hi, what can you do?",
-    }
-)
-print(f"Prompt value:\n{prompt_value}")
+# prompt_value = template.invoke(
+#     {
+#         "assistant_name": "David",
+#         "language": "Hebrew",
+#         "user_input": "Hi, what can you do?",
+#     }
+# )
+# print(f"Prompt value:\n{prompt_value}")
 
-# "Manual" chaining
-response = llm.invoke(prompt_value)
-print(f"LLM response:\n{response}")
+# # # "Manual" chaining
+# response = llm.invoke(prompt_value)
+# print(f"LLM response:\n{response}")
 
 
-# Building langchain chain
+# # Building langchain chain
 chain = template | llm | StrOutputParser()
+
 response = chain.invoke(
     {
         "assistant_name": "David",

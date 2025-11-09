@@ -3,9 +3,8 @@ from pprint import pprint
 from dotenv import load_dotenv
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 
@@ -16,7 +15,7 @@ load_dotenv()
 # Add memory to the process
 memory = MemorySaver()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 
 db = SQLDatabase.from_uri("sqlite:///../docs/demo.db")
@@ -46,11 +45,11 @@ Then you should query the schema of the most relevant tables."""
 
 
 
-sql_agent = create_react_agent(
-    llm,
-    db_tools,
+sql_agent = create_agent(
+    model=llm,
+    tools=db_tools,
     checkpointer=memory,
-    prompt=SYSTEM_PROMPT
+    system_prompt=SYSTEM_PROMPT
 )
 
 def invoke_llm(user_input: str, thread_id: str):
@@ -62,7 +61,13 @@ def invoke_llm(user_input: str, thread_id: str):
             }
         }
     )
-    return response["messages"][-1].content
+    last_message = response["messages"][-1].content
+    text = ""
+    if isinstance(last_message, str):
+        text = last_message
+    elif isinstance(last_message, list):
+        text = last_message[0]['text']
+    return text
 
 
 
