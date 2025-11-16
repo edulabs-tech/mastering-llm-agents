@@ -1,7 +1,5 @@
 from typing import Tuple
 
-from langchain_core.tools import tool
-from langchain_mcp_adapters.tools import to_fastmcp
 from mcp.server.fastmcp import FastMCP
 from pydantic import BaseModel
 
