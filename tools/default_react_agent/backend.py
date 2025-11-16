@@ -7,7 +7,7 @@ from langchain.agents import create_agent
 
 load_dotenv()
 # llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 @tool
 def calculate_income_tax(annual_income):
@@ -61,3 +61,11 @@ def invoke_llm(user_input: str, thread_id: str):
         }
     )
     return response["messages"][-1].content
+
+
+# from IPython.display import Image, display
+def save_graph_png():
+    agent_executor.get_graph().draw_mermaid_png(output_file_path="graph.png")
+
+if __name__ == '__main__':
+    save_graph_png()

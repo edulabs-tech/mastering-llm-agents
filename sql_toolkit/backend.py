@@ -15,15 +15,17 @@ load_dotenv()
 # Add memory to the process
 memory = MemorySaver()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
+llm_for_query_checker = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 
 db = SQLDatabase.from_uri("sqlite:///../docs/demo.db")
+# db = SQLDatabase.from_uri("sqlite:///../docs/netflixdb.sqlite")
 # print(db.dialect)
 # print(db.get_usable_table_names())
 
 
-toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+toolkit = SQLDatabaseToolkit(db=db, llm=llm_for_query_checker)
 db_tools = toolkit.get_tools()
 # pprint(db_tools)
 
