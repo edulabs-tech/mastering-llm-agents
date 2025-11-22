@@ -38,6 +38,7 @@ async def main():
             mcp_tools = await load_mcp_tools(session)
             for mcp_tool in mcp_tools:
                 print(f"{mcp_tool.name}: {mcp_tool.description}\n\n")
+            # filter out read_file
 
             agent = create_agent(
                 llm,
@@ -46,6 +47,7 @@ async def main():
 
             # agent_response = await agent.ainvoke({"messages": "what can you do?"})
             agent_response = await agent.ainvoke({"messages": "how many files are in directory docs/?"})
+            # agent_response = await agent.ainvoke({"messages": "search for mentions of sql db in folder docs/?"})
 
             for m in agent_response["messages"]:
                 m.pretty_print()

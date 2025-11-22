@@ -31,14 +31,14 @@ async def main():
             print(f"Detected tools: {mcp_tools}")
 
 
-            # Create and run the agent
+            # # # Create and run the agent
             gemini_model = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
             agent = create_agent(
                 gemini_model,
                 mcp_tools
             )
-            # agent_response = await agent.ainvoke({"messages": "what's (3 + 5) x 12?"})
-            agent_response = await agent.ainvoke({"messages": "solve the following: 5+4 and 2+3?"})
+            agent_response = await agent.ainvoke({"messages": "what's 3 + 5 x 12?"})
+            # agent_response = await agent.ainvoke({"messages": "solve the following: 5+4 and 2+3?"})
 
             for m in agent_response["messages"]:
                 m.pretty_print()

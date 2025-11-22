@@ -34,31 +34,31 @@ from langchain_core.messages import convert_to_messages
 
 
 # # try rewrite_question
-# input = {
-#     "messages": convert_to_messages(
-#         [
-#             {
-#                 "role": "user",
-#                 "content": "What does Lilian Weng say about types of reward hacking?",
-#             },
-#             {
-#                 "role": "assistant",
-#                 "content": "",
-#                 "tool_calls": [
-#                     {
-#                         "id": "1",
-#                         "name": "retrieve_blog_posts",
-#                         "args": {"query": "types of reward hacking"},
-#                     }
-#                 ],
-#             },
-#             {"role": "tool", "content": "meow", "tool_call_id": "1"},
-#         ]
-#     )
-# }
+input = {
+    "messages": convert_to_messages(
+        [
+            {
+                "role": "user",
+                "content": "What does Lilian Weng say about types of reward hacking?",
+            },
+            {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "id": "1",
+                        "name": "retrieve_blog_posts",
+                        "args": {"query": "types of reward hacking"},
+                    }
+                ],
+            },
+            {"role": "tool", "content": "meow", "tool_call_id": "1"},
+        ]
+    )
+}
 
-# response = rewrite_question(input)
-# response["messages"][-1].pretty_print()
+response = rewrite_question(input)
+response["messages"][-1].pretty_print()
 # todo - ideas on how to improve the prompt???
 
 # # try generate_answer
@@ -95,57 +95,57 @@ from langchain_core.messages import convert_to_messages
 
 # try grade_documents conditional_edge
 # irrelevant docs
-from langchain_core.messages import convert_to_messages
+# from langchain_core.messages import convert_to_messages
 
-input = {
-    "messages": convert_to_messages(
-        [
-            {
-                "role": "user",
-                "content": "What does Lilian Weng say about types of reward hacking?",
-            },
-            {
-                "role": "assistant",
-                "content": "",
-                "tool_calls": [
-                    {
-                        "id": "1",
-                        "name": "retrieve_blog_posts",
-                        "args": {"query": "types of reward hacking"},
-                    }
-                ],
-            },
-            {"role": "tool", "content": "meow", "tool_call_id": "1"},
-        ]
-    )
-}
-print(grade_documents(input))
+# input = {
+#     "messages": convert_to_messages(
+#         [
+#             {
+#                 "role": "user",
+#                 "content": "What does Lilian Weng say about types of reward hacking?",
+#             },
+#             {
+#                 "role": "assistant",
+#                 "content": "",
+#                 "tool_calls": [
+#                     {
+#                         "id": "1",
+#                         "name": "retrieve_blog_posts",
+#                         "args": {"query": "types of reward hacking"},
+#                     }
+#                 ],
+#             },
+#             {"role": "tool", "content": "meow", "tool_call_id": "1"},
+#         ]
+#     )
+# }
+# print(grade_documents(input))
 
-# relevant docs
-input = {
-    "messages": convert_to_messages(
-        [
-            {
-                "role": "user",
-                "content": "What does Lilian Weng say about types of reward hacking?",
-            },
-            {
-                "role": "assistant",
-                "content": "",
-                "tool_calls": [
-                    {
-                        "id": "1",
-                        "name": "retrieve_blog_posts",
-                        "args": {"query": "types of reward hacking"},
-                    }
-                ],
-            },
-            {
-                "role": "tool",
-                "content": "reward hacking can be categorized into two types: environment or goal misspecification, and reward tampering",
-                "tool_call_id": "1",
-            },
-        ]
-    )
-}
-print(grade_documents(input))
+# # relevant docs
+# input = {
+#     "messages": convert_to_messages(
+#         [
+#             {
+#                 "role": "user",
+#                 "content": "What does Lilian Weng say about types of reward hacking?",
+#             },
+#             {
+#                 "role": "assistant",
+#                 "content": "",
+#                 "tool_calls": [
+#                     {
+#                         "id": "1",
+#                         "name": "retrieve_blog_posts",
+#                         "args": {"query": "types of reward hacking"},
+#                     }
+#                 ],
+#             },
+#             {
+#                 "role": "tool",
+#                 "content": "reward hacking can be categorized into two types: environment or goal misspecification, and reward tampering",
+#                 "tool_call_id": "1",
+#             },
+#         ]
+#     )
+# }
+# print(grade_documents(input))

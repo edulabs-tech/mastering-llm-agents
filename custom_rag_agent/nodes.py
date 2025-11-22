@@ -11,7 +11,7 @@ llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
 retriever_tool = create_retriever_tool(
     retriever,
     "retrieve_blog_posts",
-    "Search and return information about Lilian Weng blog posts.",
+    "Search and return information about Lilian Weng blog posts, this returns only information about llms and AI",
 )
 
 # generate_query_or_respond node

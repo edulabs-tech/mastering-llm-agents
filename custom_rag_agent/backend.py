@@ -6,6 +6,9 @@ from langgraph.checkpoint.memory import MemorySaver
 from nodes import *
 from edges import *
 
+# class MyCustomState(MessagesState):
+#     user_id : str
+
 workflow = StateGraph(MessagesState)
 
 # Define the nodes we will cycle between

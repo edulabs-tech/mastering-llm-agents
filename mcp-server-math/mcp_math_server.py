@@ -1,19 +1,13 @@
-from typing import Tuple
-
 from mcp.server.fastmcp import FastMCP
-from pydantic import BaseModel
 
 
-class ToolResponse(BaseModel):
-    content: str
-    artifact: int
 
 mcp = FastMCP("Math")
 
 @mcp.tool()
-def add(a: int, b: int) -> dict:
+def add(a: int, b: int) -> int:
     """Add two numbers"""
-    return {"content": f"the result is {a + b}", "artifact": a + b}
+    return  a + b
 
 
 @mcp.tool()
