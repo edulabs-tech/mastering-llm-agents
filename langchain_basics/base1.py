@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import pprint
+
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_ollama import OllamaLLM
 from langchain_openai import ChatOpenAI
@@ -12,15 +14,19 @@ gemini_llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 
 # Run a simple prompt
 response = gemini_llm.invoke("Write a haiku about LLMs running locally.")
-print(response)
+pprint.pprint(response)
+
+print("---------------------")
 
 # Run a simple prompt
 response = openai_llm.invoke("Write a haiku about LLMs running locally.")
-print(response)
+pprint.pprint(response)
+
+print("---------------------")
 
 # Run a simple prompt
 response = ollama_llm.invoke("Write a haiku about LLMs running locally.")
-print(response)
+pprint.pprint(response)
 
 
 #

@@ -25,3 +25,4 @@ mcp
 typing_extensions
 openai
 beautifulsoup4
+dotenv
