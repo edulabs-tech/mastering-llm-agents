@@ -64,23 +64,26 @@ chain = prompt_template | llm_with_tools
 def invoke_llm(prompt, history):
     # print(history)
     response: AIMessage = chain.invoke({"history": history, "text": prompt})
-    # print(response)
+    print(response)
 
     if len(response.tool_calls) > 0:
-        single_tool_call = response.tool_calls[0]
-        # now run function
-        tool_call_id = single_tool_call["id"]
-        tool_name = single_tool_call['name']
-        tool_args = single_tool_call['args']
-        print(f"Requested to run tool {tool_name} with args {tool_args}")
-        if tool_name == "calculate_income_tax":
-            tax = calculate_income_tax.invoke(tool_args)
-            print(f"Calculated income tax: {tax}")
-            # lets call LLM with this response so it could generate better reply
-            tool_message: ToolMessage = ToolMessage(content=str(tax), tool_call_id=tool_call_id)
-            response = llm_with_tools.invoke(
-                [(m["role"], m["content"]) for m in history] + [("human", prompt)] + [response]  + [tool_message])
-            return response.content
+        tool_messages = []
+        for tool_call in response.tool_calls:
+            single_tool_call = tool_call
+            # now run function
+            tool_call_id = single_tool_call["id"]
+            tool_name = single_tool_call['name']
+            tool_args = single_tool_call['args']
+            print(f"Requested to run tool {tool_name} with args {tool_args}")
+            if tool_name == "calculate_income_tax":
+                tax = calculate_income_tax.invoke(tool_args)
+                print(f"Calculated income tax: {tax}")
+                # lets call LLM with this response so it could generate better reply
+                tool_message: ToolMessage = ToolMessage(content=str(tax), tool_call_id=tool_call_id)
+                tool_messages.append(tool_message)
+        response = llm_with_tools.invoke(
+            [(m["role"], m["content"]) for m in history] + [("human", prompt)] + [response]  + tool_messages)
+        return response.content
     else:
         return response.content
 

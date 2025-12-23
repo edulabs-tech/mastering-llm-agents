@@ -18,6 +18,8 @@ system_template = """
     Be friendly, greet the customer, and answer their questions related to bank operations.
 """
 
+
+
 prompt_template = ChatPromptTemplate.from_messages([
     ("system", system_template),
     MessagesPlaceholder(variable_name="history"),

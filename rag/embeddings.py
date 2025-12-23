@@ -15,6 +15,7 @@ embedding_model = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-00
 
 
 # p1 = embedding_model.embed_query("I adopted a small dog from the animal shelter.")
+# p2 = embedding_model.embed_query("I adopted a small dog from the animal shelter.")
 # p2 = embedding_model.embed_query("I got a little puppy from the rescue center.")
 
 # p1 = embedding_model.embed_query("The stock market crashed during the economic crisis.")
@@ -23,8 +24,8 @@ embedding_model = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-00
 # p1 = embedding_model.embed_query("The stock market crashed during the economic crisis.")
 # p2 = embedding_model.embed_query("""מה קורה איש?""")
 
-# p1 = embedding_model.embed_query("What's up dude?")
-# p2 = embedding_model.embed_query("""מה קורה איש?""")
+p1 = embedding_model.embed_query("What's up dude?")
+p2 = embedding_model.embed_query("""מה קורה איש?""")
 
 # p1 = embedding_model.embed_query("The stock market crashed during the economic crisis.")
 # p2 = embedding_model.embed_query("The stock market did not crashed during the economic crisis. ")

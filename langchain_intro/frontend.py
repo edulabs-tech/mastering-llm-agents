@@ -36,7 +36,6 @@ if prompt := st.chat_input("What is your question?"):
 
     # Get assistant response and display it
     with st.chat_message("assistant"):
-
         # stream
         response = st.write_stream(stream_llm(prompt, st.session_state.messages, language=language, model_type=model))
 

@@ -61,8 +61,8 @@ vectorstore = Chroma.from_documents(
 # 0 = identical
 # Closer to 1 = less similar
 #
-example_text = "How can I contact the bank?"
-results = vectorstore.similarity_search_with_score(example_text, k=4)
+# example_text = "How can I contact the bank?"
+# results = vectorstore.similarity_search_with_score(example_text, k=4)
 # pprint(results)
 
 
@@ -75,8 +75,7 @@ results = vectorstore.similarity_search_with_score(example_text, k=4)
 # which uses the similarity search capabilities of a vector store to facilitate retrieval.
 # limit the number of documents k returned by the retriever to 6
 
-retriever = vectorstore.as_retriever(
-    search_type="similarity", search_kwargs={"k": 4})
+retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 4})
 # retrieved_docs = retriever.invoke(example_text)
 
 # pprint(retrieved_docs)
@@ -86,7 +85,7 @@ retriever = vectorstore.as_retriever(
 # retrieves relevant documents, constructs a prompt,
 # passes it into a model, and parses the output.
 # llm = ChatOpenAI(model="gpt-4o-mini")
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 # Using prompt from the prompt hub:
 # https://smith.langchain.com/hub/rlm/rag-prompt
@@ -107,7 +106,7 @@ rag_chain = (
 
 # rag_chain.invoke("how ....")
 
-for chunk in rag_chain.stream(example_text):
+for chunk in rag_chain.stream("How can I contact the bank?"):
     print(chunk, end="", flush=True)
 
 

@@ -32,13 +32,13 @@ vectorstore = Chroma.from_documents(
 )
 
 # RETRIEVAL AND GENERATION: RETRIEVAL
-retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
+retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
 # RETRIEVAL AND GENERATION: GENERATE
 # Let’s put it all together into a chain that takes a question,
 # retrieves relevant documents, constructs a prompt,
 # passes it into a model, and parses the output.
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 client = Client()
 prompt = client.pull_prompt("rlm/rag-prompt", include_model=True)
 
