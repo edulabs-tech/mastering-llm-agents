@@ -3,6 +3,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.checkpoint.memory import MemorySaver
 from langchain.agents import create_agent
 from langchain_classic.tools.retriever import create_retriever_tool
+from langchain.agents import AgentState
 
 
 from data_preprocessing import retriever
@@ -11,6 +12,12 @@ load_dotenv()
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 
+class MyAgentState(AgentState):
+    user_id: str
+
+
+
+memory = MemorySaver()
 
 retriever_tool = create_retriever_tool(
     retriever,
@@ -20,10 +27,11 @@ retriever_tool = create_retriever_tool(
 tools = [retriever_tool]
 
 
-memory = MemorySaver()
+
 agent = create_agent(
-    llm,
-    tools,
+    state_schema=MyAgentState,
+    llm=llm,
+    tools=tools,
     checkpointer=memory
 )
 
