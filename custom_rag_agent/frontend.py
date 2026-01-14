@@ -59,3 +59,7 @@ if prompt := st.chat_input("What is your question?"):
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})
 
+
+# prompts to test:
+# how to prevent hallucinations?
+# which llm is better - gemini or chatgpt?

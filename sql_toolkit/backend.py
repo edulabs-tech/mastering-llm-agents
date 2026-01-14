@@ -16,6 +16,7 @@ load_dotenv()
 memory = MemorySaver()
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
+
 llm_for_query_checker = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 

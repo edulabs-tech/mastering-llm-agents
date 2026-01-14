@@ -4,7 +4,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langchain.agents import create_agent
 from langchain_classic.tools.retriever import create_retriever_tool
 from langchain.agents import AgentState
-
+from langchain.messages import AIMessage, HumanMessage, ToolMessage
 
 from data_preprocessing import retriever
 
@@ -29,15 +29,17 @@ tools = [retriever_tool]
 
 
 agent = create_agent(
-    state_schema=MyAgentState,
-    llm=llm,
+    # state_schema=MyAgentState,
+    model=llm,
     tools=tools,
     checkpointer=memory
 )
 
+
 def invoke_llm(user_input: str, thread_id: str):
-    response = agent.invoke(
-        {"messages": [("user", user_input)]},
+    response: AgentState = agent.invoke(
+        # {"messages": [("user", user_input)]},
+        {"messages": [HumanMessage(user_input)]},
         config={
             "configurable": {
                 "thread_id": thread_id

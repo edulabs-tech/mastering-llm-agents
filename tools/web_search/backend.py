@@ -1,3 +1,4 @@
+from pprint import pprint
 from dotenv import load_dotenv
 from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -12,6 +13,9 @@ load_dotenv()
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 llm_for_summarization = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 tavily_tool = TavilySearch(max_results=3)
+
+
+# pprint(tavily_tool.invoke("latest ollama version"))
 
 
 tools = [

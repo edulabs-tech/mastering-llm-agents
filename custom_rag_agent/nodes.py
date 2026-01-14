@@ -1,18 +1,11 @@
-from langchain_classic.tools.retriever import create_retriever_tool
-from data_ingestion import retriever
 from langgraph.graph import MessagesState
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.messages import HumanMessage
+from langgraph.prebuilt import ToolNode
+from tools import retriever_tool
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
 
-
-# Retrieve node
-retriever_tool = create_retriever_tool(
-    retriever,
-    "retrieve_blog_posts",
-    "Search and return information about Lilian Weng blog posts, this returns only information about llms and AI",
-)
 
 # generate_query_or_respond node
 def generate_query_or_respond(state: MessagesState):
@@ -21,6 +14,10 @@ def generate_query_or_respond(state: MessagesState):
     """
     response = llm.bind_tools([retriever_tool]).invoke(state["messages"])
     return {"messages": [response]}
+
+
+# Retriever node
+retriever_node = ToolNode([retriever_tool])
 
 
 # rewrite_question node
@@ -40,6 +37,7 @@ def rewrite_question(state: MessagesState):
     response = llm.invoke([{"role": "user", "content": prompt}])
     return {"messages": [HumanMessage(content=response.content)]}
 
+
 # generate_answer node
 GENERATE_PROMPT = (
     "You are an assistant for question-answering tasks. "
@@ -53,6 +51,8 @@ GENERATE_PROMPT = (
 
 def generate_answer(state: MessagesState):
     """Generate an answer."""
+    # For simplicity, we assume that initial question was at the first message
+    # and the content is in the last message
     question = state["messages"][0].content
     context = state["messages"][-1].content
     prompt = GENERATE_PROMPT.format(question=question, context=context)

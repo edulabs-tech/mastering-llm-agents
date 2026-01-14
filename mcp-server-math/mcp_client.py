@@ -6,7 +6,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-from langchain_mcp_adapters.tools import load_mcp_tools, convert_mcp_tool_to_langchain_tool
+from langchain_mcp_adapters.tools import load_mcp_tools
 from langchain.agents import create_agent
 import asyncio
 
@@ -32,7 +32,7 @@ async def main():
 
 
             # # # Create and run the agent
-            gemini_model = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+            gemini_model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
             agent = create_agent(
                 gemini_model,
                 mcp_tools
