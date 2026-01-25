@@ -5,15 +5,13 @@ from langchain.agents import create_agent
 from langchain_classic.tools.retriever import create_retriever_tool
 from langchain.agents import AgentState
 from langchain.messages import AIMessage, HumanMessage, ToolMessage
+from langchain_core.output_parsers import StrOutputParser
 
 from data_preprocessing import retriever
 
 load_dotenv()
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
-
-class MyAgentState(AgentState):
-    user_id: str
 
 
 
@@ -29,7 +27,6 @@ tools = [retriever_tool]
 
 
 agent = create_agent(
-    # state_schema=MyAgentState,
     model=llm,
     tools=tools,
     checkpointer=memory
@@ -46,7 +43,9 @@ def invoke_llm(user_input: str, thread_id: str):
             }
         }
     )
-    return response["messages"][-1].content
+    last_message = response["messages"][-1]
+    message_content = StrOutputParser().invoke(last_message)
+    return message_content
 
 
 

@@ -62,7 +62,8 @@ chain = prompt_template | llm_with_tools
 def invoke_llm(prompt, history):
     response =  chain.invoke({"history": history, "text": prompt})
     print(response)
-    return response.content
+    str_output_parser = StrOutputParser()
+    return str_output_parser.invoke(response)
 
 if __name__ == '__main__':
     while True:

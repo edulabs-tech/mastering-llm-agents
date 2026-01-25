@@ -46,7 +46,7 @@ def calculate_income_tax(annual_income: int):
     return tax
 
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 tools = [
     calculate_income_tax,
 ]
@@ -66,6 +66,8 @@ def invoke_llm(prompt, history):
     response: AIMessage = chain.invoke({"history": history, "text": prompt})
     print(response)
 
+    str_output_parser = StrOutputParser()
+
     if len(response.tool_calls) > 0:
         tool_messages = []
         for tool_call in response.tool_calls:
@@ -83,8 +85,8 @@ def invoke_llm(prompt, history):
                 tool_messages.append(tool_message)
         response = llm_with_tools.invoke(
             [(m["role"], m["content"]) for m in history] + [("human", prompt)] + [response]  + tool_messages)
-        return response.content
+        return str_output_parser.invoke(response)
     else:
-        return response.content
+        return str_output_parser.invoke(response)
 
 # calculate income tax if my annual income is 1234567

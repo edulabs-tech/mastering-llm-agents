@@ -6,7 +6,6 @@ langchain-tavily
 langmem
 python-dotenv
 streamlit
-gradio
 langchain_community
 langchain_chroma
 langchain_core
