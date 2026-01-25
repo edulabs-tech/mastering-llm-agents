@@ -8,7 +8,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 
 # create model
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 SYSTEM_TEMPLATE = """
     You are a friendly customer assistant at Bank Hapoalim.
